@@ -175,7 +175,7 @@ const nodes = [
     targets: [
       {
         key: NODE_TYPE.CAP_SYNTH_JAN,
-        value: 8
+        value: 12
       }
     ]
   },
@@ -201,7 +201,7 @@ const nodes = [
       },
       {
         key: NODE_TYPE.CAP_RUM_JAN,
-        value: 4
+        value: 5
       }
     ]
   },
@@ -212,7 +212,11 @@ const nodes = [
     targets: [
       {
         key: NODE_TYPE.CAP_RUM_JAN,
-        value: 5
+        value: 6
+      },
+      {
+        key: NODE_TYPE.CAP_PLATFORM,
+        value: 1
       }
     ]
   },
@@ -224,6 +228,10 @@ const nodes = [
       {
         key: NODE_TYPE.ATTRITION,
         value: 3
+      },
+      {
+        key: NODE_TYPE.CAP_RUM_JAN,
+        value: 5
       }
     ]
   },
@@ -231,7 +239,16 @@ const nodes = [
     key: NODE_TYPE.T_RUM_NOVA,
     name: "Nova",
     color: C_RUM,
-    targets: []
+    targets: [
+      {
+        key: NODE_TYPE.CAP_RUM_JAN,
+        value: 7
+      },
+      {
+        key: NODE_TYPE.T_RUM_MAIA,
+        value: 2
+      }
+    ]
   },
   {
     key: NODE_TYPE.T_JS_AGENT,
@@ -240,7 +257,11 @@ const nodes = [
     targets: [
       {
         key: NODE_TYPE.CAP_RUM_JAN,
-        value: 5
+        value: 4
+      },
+      {
+        key: NODE_TYPE.CAP_PLATFORM,
+        value: 1
       }
     ]
   },
@@ -251,7 +272,7 @@ const nodes = [
     targets: [
       {
         key: NODE_TYPE.CAP_RUM_JAN,
-        value: 6
+        value: 8
       }
     ]
   },
@@ -263,6 +284,10 @@ const nodes = [
       {
         key: NODE_TYPE.CAP_RUM_JAN,
         value: 6
+      },
+      {
+        key: NODE_TYPE.VCT_SETTINGS,
+        value: 2
       }
     ]
   },
@@ -311,6 +336,7 @@ const nodes = [
       }
     ]
   },
+
   {
     key: NODE_TYPE.VCT_SETTINGS,
     name: "Settings 2.0 VCT",
@@ -328,7 +354,19 @@ const nodes = [
       {
         key: NODE_TYPE.T_SYNTH_CLUSTER,
         value: 3
-      }
+      },
+      {
+        key: NODE_TYPE.T_RUM_UI,
+        value: 2
+      },
+      {
+        key: NODE_TYPE.T_MOBILE,
+        value: 2
+      },
+      {
+        key: NODE_TYPE.T_RUM_CORE,
+        value: 1
+      },
     ]
   },
   {
@@ -380,10 +418,10 @@ export default function Flow() {
 
   return (
     <Sankey
-      width={960}
-      height={800}
+      width={1200}
+      height={900}
       data={data0}
-      nodePadding={20}
+      nodePadding={30}
       node={<FlowSankeyNode />}
       margin={{
         left: 100,
