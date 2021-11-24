@@ -1,5 +1,6 @@
 import { Sankey, Tooltip } from "recharts";
 import FlowSankeyNode from "./FlowSankeyNode";
+import React from "react";
 
 enum NODE_TYPE {
   CAP_SYNTH,
@@ -9,6 +10,7 @@ enum NODE_TYPE {
   CAP_RUM_JAN,
   CAP_REPLAY,
   CAP_REPLAY_JAN,
+  CAP_LOGS,
   T_SYNTH_VUP,
   T_SYNTH_UI,
   T_SYNTH_CORE,
@@ -32,6 +34,7 @@ const C_SYNTH = "#DAF7A6";
 const C_PLATFORM = "#581845";
 const C_RUM = "#FF5733";
 const C_REPLAY = "#FFC300";
+const C_LOGS = "#581845";
 const C_VCT = "#5866EC";
 const C_ATTRITION = "#ED190F";
 
@@ -201,7 +204,11 @@ const nodes = [
       },
       {
         key: NODE_TYPE.CAP_RUM_JAN,
-        value: 5
+        value: 4
+      },
+      {
+        key: NODE_TYPE.VCT_SETTINGS,
+        value: 1
       }
     ]
   },
@@ -242,10 +249,14 @@ const nodes = [
     targets: [
       {
         key: NODE_TYPE.CAP_RUM_JAN,
-        value: 7
+        value: 5
       },
       {
         key: NODE_TYPE.T_RUM_MAIA,
+        value: 2
+      },
+      {
+        key: NODE_TYPE.CAP_LOGS,
         value: 2
       }
     ]
@@ -366,13 +377,19 @@ const nodes = [
       {
         key: NODE_TYPE.T_RUM_CORE,
         value: 1
-      },
+      }
     ]
   },
   {
     key: NODE_TYPE.ATTRITION,
     name: "Attrition",
     color: C_ATTRITION,
+    targets: []
+  },
+  {
+    key: NODE_TYPE.CAP_LOGS,
+    name: "Logs",
+    color: C_LOGS,
     targets: []
   }
 ];
@@ -417,21 +434,23 @@ export default function Flow() {
   };
 
   return (
-    <Sankey
-      width={1200}
-      height={900}
-      data={data0}
-      nodePadding={30}
-      node={<FlowSankeyNode />}
-      margin={{
-        left: 100,
-        right: 100,
-        top: 100,
-        bottom: 100
-      }}
-      link={{ stroke: "#77c878" }}
-    >
-      <Tooltip />
-    </Sankey>
+    <React.Fragment>
+      <Sankey
+        width={1200}
+        height={900}
+        data={data0}
+        nodePadding={30}
+        node={<FlowSankeyNode />}
+        margin={{
+          left: 100,
+          right: 100,
+          top: 100,
+          bottom: 100
+        }}
+        link={{ stroke: "#77c878" }}
+      >
+        <Tooltip />
+      </Sankey>
+    </React.Fragment>
   );
 }
