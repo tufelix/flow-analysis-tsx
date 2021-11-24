@@ -205,7 +205,7 @@ const nodes = [
       },
       {
         key: NODE_TYPE.CAP_RUM_JAN,
-        value: 4
+        value: 3
       },
       {
         key: NODE_TYPE.ANOMALY,
@@ -220,7 +220,7 @@ const nodes = [
     targets: [
       {
         key: NODE_TYPE.CAP_RUM_JAN,
-        value: 6
+        value: 4
       },
       {
         key: NODE_TYPE.CAP_PLATFORM,
@@ -250,7 +250,7 @@ const nodes = [
     targets: [
       {
         key: NODE_TYPE.CAP_RUM_JAN,
-        value: 5
+        value: 4
       },
       {
         key: NODE_TYPE.T_RUM_MAIA,
@@ -258,7 +258,7 @@ const nodes = [
       },
       {
         key: NODE_TYPE.CAP_LOGS,
-        value: 2
+        value: 3
       }
     ]
   },
@@ -284,7 +284,7 @@ const nodes = [
     targets: [
       {
         key: NODE_TYPE.CAP_RUM_JAN,
-        value: 8
+        value: 6
       }
     ]
   },
