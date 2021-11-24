@@ -26,6 +26,7 @@ enum NODE_TYPE {
   T_VEGA,
   T_ALTAIR,
   VCT_SETTINGS,
+  ANOMALY,
   NEW_HIRES,
   ATTRITION
 }
@@ -207,7 +208,7 @@ const nodes = [
         value: 4
       },
       {
-        key: NODE_TYPE.VCT_SETTINGS,
+        key: NODE_TYPE.ANOMALY,
         value: 1
       }
     ]
@@ -297,7 +298,7 @@ const nodes = [
         value: 6
       },
       {
-        key: NODE_TYPE.VCT_SETTINGS,
+        key: NODE_TYPE.ANOMALY,
         value: 2
       }
     ]
@@ -391,7 +392,14 @@ const nodes = [
     name: "Logs",
     color: C_LOGS,
     targets: []
+  },
+  {
+    key: NODE_TYPE.ANOMALY,
+    name: "Settings Anomaly Detection",
+    color: C_VCT,
+    targets: []
   }
+
 ];
 
 const filter = "RUM";
