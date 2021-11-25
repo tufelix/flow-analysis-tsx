@@ -24,7 +24,8 @@ enum NODE_TYPE {
   VCT_SETTINGS = "VCT_SETTINGS",
   ANOMALY = "ANOMALY",
   NEW_HIRES = "NEW_HIRES",
-  ATTRITION = "ATTRITION"
+  ATTRITION = "ATTRITION",
+  TEMP_LEAVE = "TEMP_LEAVE"
 }
 
 const C_SYNTH = "#DAF7A6";
@@ -251,12 +252,17 @@ const nodes: Node[] = [
     targets: [
       {
         key: NODE_TYPE.CAP_RUM_JAN,
-        value: 4
+        value: 3
       },
       {
         key: NODE_TYPE.CAP_PLATFORM,
         value: 1
+      },
+      {
+        key: NODE_TYPE.TEMP_LEAVE,
+        value: 1
       }
+
     ]
   },
   {
@@ -440,6 +446,12 @@ const nodes: Node[] = [
     key: NODE_TYPE.ANOMALY,
     name: "Settings Anomaly Detection",
     color: C_VCT,
+    label: [LABEL.CURRENT, LABEL.FORECAST],
+    targets: []
+  },
+  {
+    key: NODE_TYPE.TEMP_LEAVE,
+    name: "Temporary Leaves",
     label: [LABEL.CURRENT, LABEL.FORECAST],
     targets: []
   }
