@@ -1,6 +1,5 @@
 import { Sankey, Tooltip } from "recharts";
 import FlowSankeyNode from "./FlowSankeyNode";
-import FlowSankeyLink from "./FlowSankeyLink";
 
 import React, { useState, useEffect } from "react";
 import listAll, { Node, Target, LABEL } from "./TeamsAPI";
