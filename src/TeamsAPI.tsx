@@ -312,7 +312,7 @@ const nodes: Node[] = [
         value: 4
       },
       {
-        key: NODE_TYPE.CAP_PLATFORM,
+        key: NODE_TYPE.ATTRITION,
         value: 1
       }
     ]

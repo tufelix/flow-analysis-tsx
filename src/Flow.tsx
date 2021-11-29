@@ -1,5 +1,6 @@
 import { Sankey, Tooltip } from "recharts";
 import FlowSankeyNode from "./FlowSankeyNode";
+import FlowSankeyLink from "./FlowSankeyLink";
 
 import React, { useState, useEffect } from "react";
 import listAll, { Node, Target, LABEL } from "./TeamsAPI";
@@ -30,7 +31,8 @@ function toNodes(nodes: Node[], checkedCurrent: boolean, checkedForecast: boolea
               return n.key;
             })
             .indexOf(target.key),
-          value: target.value
+          value: target.value,
+          color: node.color
         };
       });
     })
@@ -47,9 +49,11 @@ function toNodes(nodes: Node[], checkedCurrent: boolean, checkedForecast: boolea
   };
   console.log(result);
 
+  /*
   result.nodes.forEach(function (node, index: number) {
     console.log(index + ": " + node.name);
   });
+  */
 
 
   return result;
@@ -109,7 +113,7 @@ export default function Flow() {
             top: 100,
             bottom: 100
           }}
-          link={{ stroke: "#77c878" }}
+          link={{ stroke: '#77c878' }}
         >
           <Tooltip />
         </Sankey>
@@ -119,3 +123,4 @@ export default function Flow() {
     return <div>Loading ...</div>;
   }
 }
+
