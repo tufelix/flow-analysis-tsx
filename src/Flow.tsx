@@ -1,412 +1,43 @@
 import { Sankey, Tooltip } from "recharts";
 import FlowSankeyNode from "./FlowSankeyNode";
 
-enum NODE_TYPE {
-  CAP_SYNTH,
-  CAP_SYNTH_JAN,
-  CAP_PLATFORM,
-  CAP_RUM,
-  CAP_RUM_JAN,
-  CAP_REPLAY,
-  CAP_REPLAY_JAN,
-  T_SYNTH_VUP,
-  T_SYNTH_UI,
-  T_SYNTH_CORE,
-  T_SYNTH_CLUSTER,
-  T_RUM_CORE,
-  T_RUM_UI,
-  T_RUM_MAIA,
-  T_RUM_NOVA,
-  T_JS_AGENT,
-  T_MOBILE,
-  T_MRUM,
-  T_SIRIUS,
-  T_VEGA,
-  T_ALTAIR,
-  VCT_SETTINGS,
-  NEW_HIRES,
-  ATTRITION
-}
+import React, { useState, useEffect } from "react";
+import listAll, { Node, Target, LABEL } from "./TeamsAPI";
 
-const C_SYNTH = "#DAF7A6";
-const C_PLATFORM = "#581845";
-const C_RUM = "#FF5733";
-const C_REPLAY = "#FFC300";
-const C_VCT = "#5866EC";
-const C_ATTRITION = "#ED190F";
-
-const nodes = [
-  {
-    key: NODE_TYPE.CAP_SYNTH,
-    name: "Synthetic and Monitors",
-    color: C_SYNTH,
-    targets: [
-      {
-        key: NODE_TYPE.T_SYNTH_VUP,
-        value: 5
-      },
-      {
-        key: NODE_TYPE.T_SYNTH_UI,
-        value: 5
-      },
-      {
-        key: NODE_TYPE.T_SYNTH_CORE,
-        value: 8
-      },
-      {
-        key: NODE_TYPE.T_SYNTH_CLUSTER,
-        value: 6
-      }
-    ]
-  },
-  {
-    key: NODE_TYPE.CAP_SYNTH_JAN,
-    name: "Synthetic and Monitors Jan",
-    color: C_SYNTH,
-    targets: []
-  },
-  {
-    key: NODE_TYPE.CAP_PLATFORM,
-    name: "Platform",
-    color: C_PLATFORM,
-    targets: []
-  },
-  {
-    key: NODE_TYPE.CAP_RUM,
-    name: "RUM",
-    color: C_RUM,
-    area: "RUM",
-    targets: [
-      {
-        key: NODE_TYPE.T_RUM_CORE,
-        value: 5
-      },
-      {
-        key: NODE_TYPE.T_RUM_UI,
-        value: 5
-      },
-      {
-        key: NODE_TYPE.T_MOBILE,
-        value: 6
-      },
-      {
-        key: NODE_TYPE.T_JS_AGENT,
-        value: 6
-      },
-      {
-        key: NODE_TYPE.T_MRUM,
-        value: 6
-      },
-      {
-        key: NODE_TYPE.T_RUM_NOVA,
-        value: 9
-      },
-      {
-        key: NODE_TYPE.T_RUM_MAIA,
-        value: 6
-      }
-    ]
-  },
-  {
-    key: NODE_TYPE.CAP_RUM_JAN,
-    name: "RUM Jan",
-    color: C_RUM,
-    targets: []
-  },
-  {
-    key: NODE_TYPE.CAP_REPLAY,
-    name: "Session Replay",
-    color: C_REPLAY,
-    targets: [
-      {
-        key: NODE_TYPE.T_SIRIUS,
-        value: 8
-      },
-      {
-        key: NODE_TYPE.T_VEGA,
-        value: 8
-      },
-      {
-        key: NODE_TYPE.T_ALTAIR,
-        value: 7
-      }
-    ]
-  },
-  {
-    key: NODE_TYPE.CAP_REPLAY_JAN,
-    name: "Session Replay Jan",
-    color: C_REPLAY,
-    targets: []
-  },
-  {
-    key: NODE_TYPE.T_SYNTH_VUP,
-    name: "Synthetic VUP",
-    color: C_SYNTH,
-    targets: [
-      {
-        key: NODE_TYPE.CAP_PLATFORM,
-        value: 3
-      },
-      {
-        key: NODE_TYPE.T_SYNTH_CORE,
-        value: 2
-      }
-    ]
-  },
-  {
-    key: NODE_TYPE.T_SYNTH_UI,
-    name: "Synthetic UI",
-    color: C_SYNTH,
-    targets: [
-      {
-        key: NODE_TYPE.VCT_SETTINGS,
-        value: 3
-      },
-      {
-        key: NODE_TYPE.CAP_PLATFORM,
-        value: 1
-      }
-    ]
-  },
-  {
-    key: NODE_TYPE.T_SYNTH_CORE,
-    name: "Synthetic Core",
-    color: C_SYNTH,
-    targets: [
-      {
-        key: NODE_TYPE.CAP_SYNTH_JAN,
-        value: 12
-      }
-    ]
-  },
-  {
-    key: NODE_TYPE.T_SYNTH_CLUSTER,
-    name: "Synthetic Cluster",
-    color: C_SYNTH,
-    targets: [
-      {
-        key: NODE_TYPE.CAP_SYNTH_JAN,
-        value: 9
-      }
-    ]
-  },
-  {
-    key: NODE_TYPE.T_RUM_CORE,
-    name: "RUM Core",
-    color: C_RUM,
-    targets: [
-      {
-        key: NODE_TYPE.CAP_PLATFORM,
-        value: 1
-      },
-      {
-        key: NODE_TYPE.CAP_RUM_JAN,
-        value: 5
-      }
-    ]
-  },
-  {
-    key: NODE_TYPE.T_RUM_UI,
-    name: "RUM UI",
-    color: C_RUM,
-    targets: [
-      {
-        key: NODE_TYPE.CAP_RUM_JAN,
-        value: 6
-      },
-      {
-        key: NODE_TYPE.CAP_PLATFORM,
-        value: 1
-      }
-    ]
-  },
-  {
-    key: NODE_TYPE.T_RUM_MAIA,
-    name: "Maia",
-    color: C_RUM,
-    targets: [
-      {
-        key: NODE_TYPE.ATTRITION,
-        value: 3
-      },
-      {
-        key: NODE_TYPE.CAP_RUM_JAN,
-        value: 5
-      }
-    ]
-  },
-  {
-    key: NODE_TYPE.T_RUM_NOVA,
-    name: "Nova",
-    color: C_RUM,
-    targets: [
-      {
-        key: NODE_TYPE.CAP_RUM_JAN,
-        value: 7
-      },
-      {
-        key: NODE_TYPE.T_RUM_MAIA,
-        value: 2
-      }
-    ]
-  },
-  {
-    key: NODE_TYPE.T_JS_AGENT,
-    name: "JS Agent",
-    color: C_RUM,
-    targets: [
-      {
-        key: NODE_TYPE.CAP_RUM_JAN,
-        value: 4
-      },
-      {
-        key: NODE_TYPE.CAP_PLATFORM,
-        value: 1
-      }
-    ]
-  },
-  {
-    key: NODE_TYPE.T_MOBILE,
-    name: "Mobile Agent",
-    color: C_RUM,
-    targets: [
-      {
-        key: NODE_TYPE.CAP_RUM_JAN,
-        value: 8
-      }
-    ]
-  },
-  {
-    key: NODE_TYPE.T_MRUM,
-    name: "Mobile RUM",
-    color: C_RUM,
-    targets: [
-      {
-        key: NODE_TYPE.CAP_RUM_JAN,
-        value: 6
-      },
-      {
-        key: NODE_TYPE.VCT_SETTINGS,
-        value: 2
-      }
-    ]
-  },
-  {
-    key: NODE_TYPE.T_SIRIUS,
-    name: "Sirius",
-    color: C_REPLAY,
-    targets: [
-      {
-        key: NODE_TYPE.CAP_REPLAY_JAN,
-        value: 4
-      },
-      {
-        key: NODE_TYPE.ATTRITION,
-        value: 4
-      }
-    ]
-  },
-  {
-    key: NODE_TYPE.T_VEGA,
-    name: "Vega",
-    color: C_REPLAY,
-    targets: [
-      {
-        key: NODE_TYPE.CAP_REPLAY_JAN,
-        value: 7
-      },
-      {
-        key: NODE_TYPE.ATTRITION,
-        value: 1
-      }
-    ]
-  },
-  {
-    key: NODE_TYPE.T_ALTAIR,
-    name: "Altair",
-    color: C_REPLAY,
-    targets: [
-      {
-        key: NODE_TYPE.CAP_REPLAY_JAN,
-        value: 6
-      },
-      {
-        key: NODE_TYPE.ATTRITION,
-        value: 1
-      }
-    ]
-  },
-
-  {
-    key: NODE_TYPE.VCT_SETTINGS,
-    name: "Settings 2.0 VCT",
-    color: C_VCT,
-    targets: []
-  },
-  {
-    key: NODE_TYPE.NEW_HIRES,
-    name: "New Hires",
-    targets: [
-      {
-        key: NODE_TYPE.T_SYNTH_CORE,
-        value: 2
-      },
-      {
-        key: NODE_TYPE.T_SYNTH_CLUSTER,
-        value: 3
-      },
-      {
-        key: NODE_TYPE.T_RUM_UI,
-        value: 2
-      },
-      {
-        key: NODE_TYPE.T_MOBILE,
-        value: 2
-      },
-      {
-        key: NODE_TYPE.T_RUM_CORE,
-        value: 1
-      },
-    ]
-  },
-  {
-    key: NODE_TYPE.ATTRITION,
-    name: "Attrition",
-    color: C_ATTRITION,
-    targets: []
-  }
-];
-
-const filter = "RUM";
-
-export default function Flow() {
-  const filtered = nodes.filter(function (node) {
-    return true;
-    /*    return filter === undefined 
-    || (node.area && node.area === filter);*/
+function toNodes(nodes: Node[], checkedCurrent: boolean, checkedForecast: boolean) {
+  const filtered = nodes.filter(function (node: Node) {
+    return (checkedCurrent && node.label?.indexOf(LABEL.CURRENT) > -1)
+    || (checkedForecast && node.label?.indexOf(LABEL.FORECAST) > -1);
   });
 
   const links = filtered
-    .map(function (node) {
-      return node.targets.map(function (target) {
+    .map(function (node: Node) {
+      return node.targets
+      .filter(function(target: Target) {
+        return filtered.find(function(value: Node) {
+          return value.key === target?.key;
+        });
+      })
+      .map(function (target: Target) {
         return {
-          source: nodes
+          source: filtered
             .map(function (n) {
               return n.key;
             })
             .indexOf(node.key),
-          target: nodes
+          target: filtered
             .map(function (n) {
               return n.key;
             })
             .indexOf(target.key),
-          value: target.value
+          value: target.value,
+          color: node.color
         };
       });
     })
     .flat();
 
-  const data0 = {
+  const result = {
     nodes: filtered.map(function (node) {
       return {
         name: node.name,
@@ -415,23 +46,80 @@ export default function Flow() {
     }),
     links: links
   };
+  console.log(result);
 
-  return (
-    <Sankey
-      width={1200}
-      height={900}
-      data={data0}
-      nodePadding={30}
-      node={<FlowSankeyNode />}
-      margin={{
-        left: 100,
-        right: 100,
-        top: 100,
-        bottom: 100
-      }}
-      link={{ stroke: "#77c878" }}
-    >
-      <Tooltip />
-    </Sankey>
-  );
+  /*
+  result.nodes.forEach(function (node, index: number) {
+    console.log(index + ": " + node.name);
+  });
+  */
+
+
+  return result;
 }
+
+const Checkbox = ({ label, value, onChange }) => {
+  return (
+    <label>
+      <input type="checkbox" checked={value} onChange={onChange} />
+      {label}
+    </label>
+  );
+};
+
+export default function Flow() {
+  const [teams, setTeams] = useState();
+
+  const [checkedOne, setCheckedOne] = React.useState(true);
+  const [checkedTwo, setCheckedTwo] = React.useState(true);
+
+  const handleChangeOne = () => {
+    setCheckedOne(!checkedOne);
+  };
+
+  const handleChangeTwo = () => {
+    setCheckedTwo(!checkedTwo);
+  };
+
+  useEffect(() => {
+    setTeams(toNodes(listAll(), checkedOne, checkedTwo));
+  }, [checkedOne, checkedTwo]);
+
+  if (teams) {
+    return (
+      <React.Fragment>
+        <div>
+          <Checkbox
+            label={LABEL.CURRENT}
+            value={checkedOne}
+            onChange={handleChangeOne}
+          />
+          <Checkbox
+            label={LABEL.FORECAST}
+            value={checkedTwo}
+            onChange={handleChangeTwo}
+          />
+        </div>
+        <Sankey
+          width={1200}
+          height={900}
+          data={teams}
+          nodePadding={30}
+          node={<FlowSankeyNode />}
+          margin={{
+            left: 100,
+            right: 100,
+            top: 100,
+            bottom: 100
+          }}
+          link={{ stroke: '#77c878' }}
+        >
+          <Tooltip />
+        </Sankey>
+      </React.Fragment>
+    );
+  } else {
+    return <div>Loading ...</div>;
+  }
+}
+
